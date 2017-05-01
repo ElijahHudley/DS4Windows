@@ -1,5 +1,5 @@
-# DS4Windows
-Like those other ds4tools, but sexier.
+# DS4Windows with Nacon support
+Like that sexy ds4tool...
 
 DS4Windows is a portable program that allows you to get the best experience while using a DualShock 4 on your PC. By emulating a Xbox 360 controller, many more games are accessible.
 
