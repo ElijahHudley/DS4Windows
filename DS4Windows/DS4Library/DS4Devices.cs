@@ -31,8 +31,9 @@ namespace DS4Windows
         {
             lock (Devices)
             {
-                int[] pid = { 0xBA0, 0x5C4, 0x09CC };
-                IEnumerable<HidDevice> hDevices = HidDevices.Enumerate(0x054C, pid);
+                int[] pid1 = { 0xBA0, 0x5C4, 0x09CC };
+                int pid2 = 0x0D01;
+                IEnumerable<HidDevice> hDevices = Enumerable.Concat(HidDevices.Enumerate(0x054C, pid1),HidDevices.Enumerate(0x146B, pid2));
                 // Sort Bluetooth first in case USB is also connected on the same controller.
                 hDevices = hDevices.OrderBy<HidDevice, ConnectionType>((HidDevice d) => { return DS4Device.HidConnectionType(d); });
 
@@ -83,7 +84,9 @@ namespace DS4Windows
                     }
                     if (hDevice.IsOpen)
                     {
-                        if (Devices.ContainsKey(hDevice.readSerial()))
+                        if (hDevice.Description == "HID-compliant vendor-defined device")
+                            continue; // ignore the Nacon Revolution Pro programming interface
+                        else if (Devices.ContainsKey(hDevice.readSerial()))
                             continue; // happens when the BT endpoint already is open and the USB is plugged into the same host
                         else
                         {
